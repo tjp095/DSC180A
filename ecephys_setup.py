@@ -10,7 +10,7 @@ from allensdk.brain_observatory.ecephys.ecephys_project_cache import EcephysProj
 
 DEFAULT_SESSION_ID = 715093703
 def get_session(session_id=DEFAULT_SESSION_ID):
-	output_dir = '/Users/lyn/Documents/UCSD Stuffs/DSC 180A/allensdk-data' # must be updated to a valid directory in your filesystem
+	output_dir = '../allensdk-data' # must be updated to a valid directory in your filesystem
 	DOWNLOAD_COMPLETE_DATASET = True
 	
 	manifest_path = os.path.join(output_dir, "manifest.json")

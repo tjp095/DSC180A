@@ -1,3 +1,4 @@
 .DS_Store
 /.ipynb_checkpoints
 __pycache__/ecephys_setup.cpython-39.pyc
+allensdk-data/.ipynb_checkpoints/ecephys_data_access-checkpoint.ipynb
