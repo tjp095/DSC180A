@@ -1,0 +1,56 @@
+# Data Parameters:
+data:
+    dataset_path: "./DNN_Data"
+    batch_size: 512
+    num_workers: 2
+    seed: 67
+    min_digit: 0
+    max_digit: 9
+    min_rotation_degrees: 0
+    max_rotation_degrees: 360
+
+# Model Architecture Parameters:
+model:
+    input_shape: 784   # fixed value (28 x 28 = 784 pixels)
+    shared_layers: 2
+    task_layers: 2
+    shared_nodes: 512
+    task_nodes: 512
+    
+    # Fixed Values:
+    digit_out: 10
+    parity_out: 2
+    rotation_out: 2
+    
+
+# Training Parameters:
+training:
+    learning_rate: 0.001
+    epochs: 20
+    optimizer: "adam"
+    activation: "elu"
+    device: "cuda"
+
+    # possible activation functions:
+    # nn.ReLU() - "relu"
+    # nn.LeakyReLU() - "leaky_relu"
+    # nn.Sigmoid() - "sigmoid"
+    # nn.Tanh() - "tanh"
+    # nn.Softmax() - "softmax"
+    # nn.ELU() - "elu"
+    # nn.Softplus() - "softplus"
+
+# VAE Parameters:
+vae:
+    h1_dim: 512
+    h2_dim: 200
+    h3_dim: 200
+    z_dim: 2
+    batch_size: 120
+    learning_rate: 0.0003
+    epochs: 80
+    beta: 0.2
+
+save_activations: True
+run_vae: False
+run_linear_probing: False
