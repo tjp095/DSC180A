@@ -2,3 +2,5 @@
 /.ipynb_checkpoints
 __pycache__/ecephys_setup.cpython-39.pyc
 allensdk-data/.ipynb_checkpoints/ecephys_data_access-checkpoint.ipynb
+/rotated-MNIST/.ipynb_checkpoints
+/rotated-MNIST/__pycache__
