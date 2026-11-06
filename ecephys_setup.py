@@ -1,22 +1,27 @@
-import os
+from pathlib import Path
 import warnings
 warnings.filterwarnings("ignore", message=".*Ignoring cached namespace.*") # Stops annoying library version warnings
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from allensdk.brain_observatory.ecephys.ecephys_project_cache import EcephysProjectCache
 
+CACHE_DIR = Path(__file__).resolve().parent / "data" / "ecephys"
 DEFAULT_SESSION_ID = 715093703
+EDA_SESSION_ID = 750749662
+
+
+def get_cache():
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    return EcephysProjectCache.from_warehouse(
+        manifest=str(CACHE_DIR / "manifest.json")
+    )
+
+
 def get_session(session_id=DEFAULT_SESSION_ID):
-	output_dir = '../allensdk-data' # must be updated to a valid directory in your filesystem
-	DOWNLOAD_COMPLETE_DATASET = True
-	
-	manifest_path = os.path.join(output_dir, "manifest.json")
-	cache = EcephysProjectCache.from_warehouse(manifest=manifest_path)
-	session_data = cache.get_session_data(session_id)
-	return session_data
+    return get_cache().get_session_data(session_id)
+
 
 def get_units(session, stim="drifting_gratings", region="VISp"):
 	stim_presentations = session.get_stimulus_table(stim)
@@ -49,3 +54,14 @@ def clean_grating_spike_data(grating_spikes, grating_presentations, bin_size=0.2
 	)
 
 	return spikes_clean
+
+
+if __name__ == "__main__":
+    print(f"AllenSDK cache: {CACHE_DIR}", flush=True)
+    cache = get_cache()
+    cache.get_session_table()
+
+    for session_id in (DEFAULT_SESSION_ID, EDA_SESSION_ID):
+        print(f"Preparing session {session_id}...", flush=True)
+        session = cache.get_session_data(session_id)
+        print(f"Session {session_id} ready ({len(session.units)} units)", flush=True)
