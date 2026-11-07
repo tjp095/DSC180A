@@ -112,3 +112,30 @@ Think of each region's representation as a constellation of K points in N-dimens
 - Two constellations could be completely unrelated → CKA near chance (which, as we discussed, is not 0).
 
 So CKA is essentially asking: are these two point-clouds the same shape?
+
+*Example prompt 3*: and in this case, the X and Y we actually feed into linear_cka are the correlation matrices across the 8 stimulus classes, which represents the dissimilarities between stimuli.
+```
+def cka_linear(X, Y):
+    Kc = center_gram(X @ X.T)
+    Lc = center_gram(Y @ Y.T)
+    return np.sum(Kc * Lc) / np.sqrt(np.sum(Kc * Kc) * np.sum(Lc * Lc))
+```
+
+*Example response 3*: Careful — this is a subtle point and I want to flag it before it causes a bug in your pipeline.
+No — you feed in the response matrices, not the correlation matrices
+
+For linear CKA, the inputs X and Y are the raw (centered) neural response matrices. CKA internally computes the Gram matrices `X @ X.T` and `Y @ Y.T` (and their cross term `Y.T @ X`). Those Gram matrices are what encode the similarity between stimuli — but you don't construct them yourself. CKA does it for you.
+
+**Why it's easy to get confused here**
+
+You're right that CKA conceptually operates on stimulus-by-stimulus similarity structure. The Gram matrix `X @ X.T` is a (K × K) matrix whose entry (i, j) is the dot product between the population vectors for stimuli i and j — which is essentially your cosine similarity matrix from Step 1, just unnormalized (no division by the norms).
+
+So the conceptual object CKA compares is the stimulus-similarity structure. But the input to the linear_cka function is the response matrix, and the function builds the Gram matrices internally.
+
+**What happens if you feed in the correlation matrices anyway?**
+
+This is actually a real modeling choice, and it's worth knowing about — but it's a different metric than standard CKA:
+
+- If you feed in S_x = cosine_similarity(X) and S_y = cosine_similarity(Y), then linear_cka(S_x, S_y) is computing CKA between the *similarity matrices*, not between the representations.
+
+- This is sometimes called "second-order CKA" or RDM-based CKA. It asks: is the stimulus-similarity structure of the similarity structures aligned? That's a strictly more abstract question and is almost never what you want for standard cross-region comparisons.
