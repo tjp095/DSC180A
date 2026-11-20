@@ -1,0 +1,23 @@
+### 1. Compared with the original unconstrained analysis
+
+The original activations show what the frozen DNN exposes before fitting a VAE. The regular VAE tests how much remains readable after learning a KL-regularized latent representation without reducing its nominal width. The four-dimensional VAE then adds the dimensional bottleneck. Read the original-to-regular change separately from the regular-to-four-dimensional change; neither comparison changes the DNN itself.
+
+**Shared layer: rotation survives much better than digit and parity.** At the final shared layer, digit accuracy falls from 85.9% to 43.2% (-42.7 percentage points), and parity falls from 90.0% to 61.3%. Rotation error changes only from 16.3° to 17.6°. The four-number summary therefore preserves some readable properties much better than others; it is not a uniformly faithful replacement for this shared representation.
+
+### 2. Differences between layers: what is easy or difficult to compress?
+
+**Digit layer: digit identity fits into four numbers, but angle becomes harder to read.** Final digit accuracy is 92.5% with the regular VAE and 92.1% with four dimensions, compared with 92.4% in the original activations. Rotation error rises from 75.5° to 87.5°; 90° is the unrelated-angle reference. This is selective retention of the main task of this branch, not preservation of every property of the input.
+
+**Parity layer: even versus odd survives better than exact digit identity.** Parity accuracy stays near 96.1% (95.8% regular), while digit accuracy falls from 86.6% to 79.7%. The compressed code can retain the distinction needed for parity while making distinctions between individual digits less accessible. Because parity is determined by digit, these readouts overlap rather than measure independent factors.
+
+**Rotation layer: angle remains much more accessible than digit identity.** Angular error increases from 18.0° to 22.2° (+4.2°), while digit accuracy falls from 24.3% to 11.5%, close to the 10% digit-chance reference. The task branches therefore respond differently to the same four-dimensional limit.
+
+**Depth and individual digits add detail.** The full layer plots show where the differences develop; the per-digit heatmap shows whether the average hides selective losses. At the final digit layer, the largest digit-accuracy decrease is for digit 8 (-2.0 points). These per-digit extremes are exploratory, not independent significance tests.
+
+### 3. What the four-dimensional constraint changes — and what CKA adds
+
+**Overall geometry can look similar while a particular readout worsens.** At the final rotation layer, CKA between original activations and the VAE latent means is 0.928 for the regular VAE and 0.919 for the four-dimensional VAE. Both matrices contain the same images in the same row order. CKA asks whether their overall patterns of variation across images agree; the digit probe asks whether digit identity is linearly readable. High CKA alongside a digit-accuracy drop shows why geometry alone is not a complete measure of task information.
+
+**This is a dimensionality comparison, with KL in both models.** A reconstruction objective does not assign equal importance to preserving digit, parity, and angle labels. Four dimensions can preserve the dominant structure of a specialized layer while weakening secondary readouts. Similar reconstruction error also does not guarantee similar task accuracy. KL totals and effective rank are supporting diagnostics, not evidence that individual coordinates correspond to independent semantic factors.
+
+**How strong is this conclusion?** These results apply to the tested VAEs, two training seeds, and linear probes. 95.8% of regular fits and 62.5% of four-dimensional fits selected the final epoch of the 60-epoch budget, so the exact differences may also depend on further optimization. The glyph-bootstrap intervals assess held-out-sample variation for one fixed seed; they do not establish uncertainty over all possible training runs.

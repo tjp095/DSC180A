@@ -1,0 +1,4 @@
+condition,digit_acc,parity_acc,rotation_mae_deg
+unconstrained,0.928,0.961,13.608244722994154
+ortho_1,0.922,0.959,13.350652065229015
+ortho_5,0.923,0.959,13.501925037003216

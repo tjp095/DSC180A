@@ -1,0 +1,38 @@
+{
+  "seed": 67,
+  "vae_seeds": [
+    67,
+    68
+  ],
+  "betas": [
+    0.0,
+    1.0
+  ],
+  "epochs": 40,
+  "latent_dim": 4,
+  "train_glyphs": 2000,
+  "val_glyphs": 500,
+  "test_glyphs": 500,
+  "checkpoints": {
+    "unconstrained": {
+      "file": "wide-models\\wide-1000-epoch-model.pkl",
+      "sha256": "efb8554b5d944d00482dc71b7bba0e95a16a8437e4b765d2898119f8e12a83f1"
+    },
+    "ortho_1": {
+      "file": "ortho-models\\ortho-1000-epoch-model.pkl",
+      "sha256": "9fe2893f70dd944a29563599d31f50ff8c396154baf580fadedda8b41fd5cc15"
+    },
+    "ortho_5": {
+      "file": "strong-ortho-models\\strong-ortho-1000-epoch-model.pkl",
+      "sha256": "f16ff10799e392013b33bec44e6f36091fb0e9537ac90fb30f60a9c828f0891e"
+    }
+  },
+  "versions": {
+    "torch": "2.8.0+cpu",
+    "torchvision": "0.23.0+cpu",
+    "numpy": "1.23.5",
+    "pandas": "1.5.3",
+    "scipy": "1.10.1",
+    "sklearn": "1.6.1"
+  }
+}
